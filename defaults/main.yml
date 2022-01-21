@@ -15,6 +15,8 @@ systemd_tempdir: "{{ '/tmp' if ansible_os_family == 'RedHat' and
   ansible_distribution_major_version|int == 7 else '%T' }}"
 container_run_as_user: root
 container_run_as_group: root
+container_user_subuid: 100000
+container_group_subgid: 100000
 container_stop_timeout: 15
 
 # SystemD dependencies (some are hardcoded; see templates)

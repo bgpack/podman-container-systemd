@@ -181,14 +181,13 @@
       - not user_lingering.stat.exists
 
   - name: "create systemd service file for container: {{ container_name }}"
+    become: true
     template:
       src: systemd-service-single.j2
       dest: "{{ service_files_dir }}/{{ service_name }}"
-      owner: root
-      group: root
+      owner: "{{ container_run_as_user }}"
+      group: "{{ container_run_as_group }}"
       mode: 0644
-    become: true
-    become_user: "{{ container_run_as_user }}"
     notify:
       - reload systemctl
       - start service
@@ -197,11 +196,12 @@
     when: container_image_list is defined and container_image_list | length == 1
 
   - name: "create systemd service file for pod: {{ container_name }}"
+    become: true
     template:
       src: systemd-service-pod.j2
       dest: "{{ service_files_dir }}/{{ service_name }}"
-      owner: root
-      group: root
+      owner: "{{ container_run_as_user }}"
+      group: "{{ container_run_as_group }}"
       mode: 0644
     notify:
       - reload systemctl

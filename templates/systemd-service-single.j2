@@ -32,8 +32,8 @@ ExecStart=/usr/bin/podman run --name {{ container_name }} \
   {{ container_image_list | first }} {% if container_cmd_args is defined %} \
   {{ container_cmd_args }} {% endif %}
 
-ExecStop=/usr/bin/sh -c "/usr/bin/podman stop -t "{{ container_stop_timeout }}" `cat {{ cidfile }}`"
-ExecStop=/usr/bin/sh -c "/usr/bin/podman rm -f `cat {{ cidfile }}`"
+ExecStop=/usr/bin/sh -c "/usr/bin/podman stop -i -t "{{ container_stop_timeout }}" --cidfile {{ cidfile }}"
+ExecStop=/usr/bin/sh -c "/usr/bin/podman rm -i -f --cidfile {{ cidfile }}"
 Restart={{ container_restart }}
 RestartSec={{ systemd_RestartSec }}
 KillMode=mixed
